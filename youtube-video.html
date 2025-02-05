@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube動画をリンクで表示</title>
+    <style>
+        /* ページ全体のスタイル */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        /* フォームのスタイル */
+        .form-container {
+            text-align: center;
+            margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 60%;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* 動画表示用コンテナのスタイル */
+        #videoContainer {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        iframe {
+            border-radius: 8px;
+        }
+
+        /* エラーメッセージのスタイル */
+        .error-message {
+            color: #ff0000;
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>YouTube動画をリンクで表示</h1>
+    
+    <!-- フォームコンテナ -->
+    <div class="form-container">
+        <label for="youtubeLink">YouTube動画のURLを入力:</label>
+        <input type="text" id="youtubeLink" placeholder="動画URLを入力">
+        <button onclick="showVideo()">動画を表示</button>
+    </div>
+
+    <!-- 動画表示用のコンテナ -->
+    <div id="videoContainer">
+        <iframe id="videoPlayer" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <!-- エラーメッセージ -->
+    <div id="errorContainer" class="error-message" style="display: none;">
+        有効なYouTubeのURLを入力してください。
+    </div>
+
+    <script>
+        function showVideo() {
+            // 入力されたYouTubeのリンクを取得
+            var link = document.getElementById('youtubeLink').value;
+            
+            // 正規表現を使ってYouTubeの動画IDを取得
+            var videoId = link.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/]+\/.*\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+            
+            if (videoId) {
+                // 取得した動画IDを使ってiframeのsrcを設定
+                var iframe = document.getElementById('videoPlayer');
+                iframe.src = 'https://www.youtube.com/embed/' + videoId[1];
+                
+                // 動画コンテナを表示
+                document.getElementById('videoContainer').style.display = 'block';
+                document.getElementById('errorContainer').style.display = 'none'; // エラーメッセージを非表示
+            } else {
+                // エラーメッセージを表示
+                document.getElementById('errorContainer').style.display = 'block';
+                document.getElementById('videoContainer').style.display = 'none'; // 動画コンテナを非表示
+            }
+        }
+    </script>
+<!--example-link-->
+<!--https://www.youtube.com/watch?v=dQw4w9WgXcQ-->
+
+</body>
+</html>
